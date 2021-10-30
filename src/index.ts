@@ -35,14 +35,14 @@ interface InitialMessage {
 export interface CleanConsoleConfiguration {
   excludeMethods?: ConsoleMethods[],
   clearOnInit?: boolean,
-  debugLocalStoregeKey?: string,
+  debugLocalStorageKey?: string,
   initialMessages?: InitialMessage[]
 }
 
 export const CleanConsole = {
 
   init: (config: CleanConsoleConfiguration = {}) => {
-    if (config.debugLocalStoregeKey && readLocalStorageKey(config.debugLocalStoregeKey)) {
+    if (config.debugLocalStorageKey && readLocalStorageKey(config.debugLocalStorageKey)) {
       return;
     }
     clearOnInit(config);
@@ -74,11 +74,11 @@ function setInitialMessages(initialMessages: InitialMessage[] | undefined) {
   });
 }
 
-function overrideConsoleMethods(methodsToEclude: ConsoleMethods[] = []) {
+function overrideConsoleMethods(methodsToExclude: ConsoleMethods[] = []) {
   const consoleProperties: ConsoleMethods[] = Object.keys(console) as ConsoleMethods[];
   consoleProperties.forEach((property: ConsoleMethods) => {
     const isTypeFunction: boolean = typeof (console as CleanConsoleInterface)[property] === 'function';
-    const isNotExcluded: boolean = methodsToEclude.indexOf(property) === -1;
+    const isNotExcluded: boolean = methodsToExclude.indexOf(property) === -1;
     if (isTypeFunction && isNotExcluded) {
       ((console as CleanConsoleInterface)[property] as Function) = () => { null; };
     }
