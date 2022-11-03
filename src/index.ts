@@ -34,6 +34,7 @@ interface InitialMessage {
 }
 export interface CleanConsoleConfiguration {
   excludeMethods?: ConsoleMethods[],
+  enabled?: boolean,
   clearOnInit?: boolean,
   debugLocalStorageKey?: string,
   initialMessages?: InitialMessage[]
@@ -42,7 +43,7 @@ export interface CleanConsoleConfiguration {
 export const CleanConsole = {
 
   init: (config: CleanConsoleConfiguration = {}) => {
-    if (config.debugLocalStorageKey && readLocalStorageKey(config.debugLocalStorageKey)) {
+    if (!config.enabled || (config.debugLocalStorageKey && readLocalStorageKey(config.debugLocalStorageKey))) {
       return;
     }
     clearOnInit(config);
